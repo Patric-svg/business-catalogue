@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cumpany Product Catalog</title>
+    <style>
+         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #3906df;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .card {
+            background-color: rgb(13, 212, 247);
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            min-width: 300px;
+        }
+        h1 {
+            color: #2fe10c;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #04a925;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .product {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .product h3 {
+            margin-top: 0;
+            color: #c513b3;
+        }
+        .property {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .property-name {
+            font-weight: bold;
+            color: #000000;
+        }
+        .highlight {
+            background-color: #e8f4fc;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .console {
+            background-color: #000000;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        .experiment-section {
+            margin-top: 30px;
+        }
+        button {
+            background-color: #0a06e3;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #9e0cca;
+        }
+    </style>
+</head>
+<body>
+     <h1>Company Product Catalog</h1>
+    
+    <div class="container">
+        <div class="card">
+            <h2>Inventory</h2>
+            <div id="inventory"></div>
+        </div>
+        
+        <div class="card">
+            <h2>Console Output</h2>
+            <div class="console" id="consoleOutput"></div>
+            
+            <div class="experiment-section">
+                <h2>Experiments</h2>
+                <button onclick="showThirdItemQuantity()">Show Third Item Quantity</button>
+                <button onclick="addNewProduct()">Add New Product</button>
+                <button onclick="updateProductPrice()">Update First Product Price</button>
+                <button onclick="showLowStockItems()">Show Low Stock Items</button>
+                <button onclick="calculateTotalValue()">Calculate Total Inventory Value</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let inventory = [];
+        
+        const item1 = {
+            name: "Laptop",
+            model: "XPS 13",
+            cost: 999.99,
+            quantity: 15
+        };
+        
+        const item2 = {
+            name: "Smartphone",
+            model: "Galaxy S21",
+            cost: 799.99,
+            quantity: 25
+        };
+        
+        const item3 = {
+            name: "Tablet",
+            model: "iPad Air",
+            cost: 599.99,
+            quantity: 10
+        };
+        
+        inventory.push(item1, item2, item3);
+        
+        console.log("Inventory array:", inventory);
+        logToOutput("Inventory array:");
+        logToOutput(JSON.stringify(inventory, null, 2));
+        
+        console.log("Quantity of third item:", inventory[2].quantity);
+        logToOutput("Quantity of third item: " + inventory[2].quantity);
+        
+        displayInventory();
+        
+        function displayInventory() {
+            const inventoryContainer = document.getElementById('inventory');
+            inventoryContainer.innerHTML = '';
+            
+            inventory.forEach((item, index) => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product';
+                
+                productDiv.innerHTML = `
+                    <h3>${item.name}</h3>
+                    <div class="property">
+                        <span class="property-name">Model:</span>
+                        <span>${item.model}</span>
+                    </div>
+                    <div class="property">
+                        <span class="property-name">Cost:</span>
+                        <span>$${item.cost.toFixed(2)}</span>
+                    </div>
+                    <div class="property">
+                        <span class="property-name">Quantity:</span>
+                        <span>${item.quantity}</span>
+                    </div>
+                `;
+                
+                inventoryContainer.appendChild(productDiv);
+            });
+        }
+        
+        function logToOutput(message) {
+            const consoleOutput = document.getElementById('consoleOutput');
+            consoleOutput.textContent += message + '\n';
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        function showThirdItemQuantity() {
+            logToOutput("--- Accessing Third Item Quantity...");
+            logToOutput(`Third item (${inventory[2].name}) quantity: ${inventory[2].quantity}`);
+        }
+        
+        function addNewProduct() {
+            logToOutput("--- Adding New Product...");
+            const newProduct = {
+                name: "Smartwatch",
+                model: "Watch 4",
+                cost: 249.99,
+                quantity: 30
+            };
+            inventory.push(newProduct);
+            logToOutput("Added new product: " + JSON.stringify(newProduct));
+            displayInventory();
+        }
+        
+        function updateProductPrice() {
+            logToOutput("--- Updating First Product Price...");
+            const oldPrice = inventory[0].cost;
+            inventory[0].cost = 899.99; 
+            logToOutput(`Updated ${inventory[0].name} price from $${oldPrice.toFixed(2)} to $${inventory[0].cost.toFixed(2)}`);
+            displayInventory();
+        }
+        
+        function showLowStockItems() {
+            logToOutput("--- Finding Low Stock Items (quantity < 15) ---");
+            const lowStockItems = inventory.filter(item => item.quantity < 15);
+            if (lowStockItems.length > 0) {
+                lowStockItems.forEach(item => {
+                    logToOutput(`${item.name} (${item.model}): ${item.quantity} units`);
+                });
+            } else {
+                logToOutput("No low stock items found");
+            }
+        }
+        
+        function calculateTotalValue() {
+            logToOutput("--- Calculating Total Inventory Value ---");
+            const totalValue = inventory.reduce((total, item) => total + (item.cost * item.quantity), 0);
+            logToOutput(`Total inventory value: $${totalValue.toFixed(2)}`);
+        }
+    </script>
+</body>
+</html>
